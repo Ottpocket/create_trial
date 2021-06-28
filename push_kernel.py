@@ -15,17 +15,40 @@ sys.path.append('/home/aott/Documents/python_scripts/Helper_Functions/Helper_Fun
 from __init__ import create_json
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model_name')
-parser.add_argument('--cont_embeddings', default='MLP', type=str,choices = ['MLP','Noemb','pos_singleMLP'])
+#parser.add_argument('--model_name', required = True) #Now created from features
+parser.add_argument('--baseline', default='True', type=bool,
+                    choices = ['True','False'])
+parser.add_argument('--high_3', default='False', type=bool,
+                    choices = ['True','False'])
+parser.add_argument('--high_5', default='False', type=bool,
+                    choices = ['True','False'])
+
 args = parser.parse_args()
 
 
-#1) and 2)
+#1) and 2) Create Folder; place json in folder
 DIRECTORY = '/home/aott/Documents/python_scripts/kaggle_stonk_directories'
-create_json(args.model_name, DIRECTORY=DIRECTORY)
+NEW_DIRECTORY = create_json(args.model_name, DIRECTORY=DIRECTORY)
 
-#3)
+#3) Place .py code in folder
 from shutil import copyfile
 FILE = 'run_model.py'
 SOURCE = '/home/aott/Documents/python_scripts/create_trial'
-copyfile(os.path.join(SOURCE, FILE), os.path.join(DIRECTORY, FILE))
+file_source = os.path.join(SOURCE, FILE)
+file_destination = os.path.join(NEW_DIRECTORY, FILE)
+copyfile(file_source, file_destination)
+
+#Adding the parameters to the copied file_source Read in the file
+#help from https://stackoverflow.com/questions/17140886/how-to-search-and-replace-text-in-a-file
+with open(file_destination, 'r') as file :
+  filedata = file.read()
+
+filedata = filedata.replace('TO_BE_REPLACED_IN_COPY',
+                            'abcd')
+with open(file_destination, 'w') as file:
+  file.write(filedata)
+
+
+#4) Call kaggle api
+#help from https://janakiev.com/blog/python-shell-commands/
+os.system(f'kaggle kernels push -p {NEW_DIRECTORY}')
