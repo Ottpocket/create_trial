@@ -1,3 +1,5 @@
+#from https://www.kaggle.com/ottpocket/model-predictions v21
+
 #Base line predictions for a model.
 #feature engineering: https://alphascientist.com/feature_engineering.html
 import numpy as np
@@ -9,14 +11,16 @@ from time import time
 from sklearn.metrics import roc_auc_score
 from sklearn.linear_model import LogisticRegression
 from catboost import CatBoostClassifier
+import sys
+os.system('git clone https://github.com/Ottpocket/Helper_Functions')
+sys.path.append('/kaggle/working/Helper_Functions')
+from Helper_Functions.__init__ import reduce_mem_usage, get_val_test_increments, get_preds
 
-!pip install git+https://github.com/Ottpocket/Helper_Functions.git
-from Helper_Functions import reduce_mem_usage, get_val_test_increments, get_preds
+
 import wandb
-
 HYPERPARAMS = dict( #Params
                     model = 'lgbm', #lgbm, catboost, logistic
-                    tags = ['baseline', 'high_3'], #declares the features for the model. DELETE is just a filter for WandB
+                    tags = [TO_BE_REPLACED_IN_COPY], #declares the features for the model. DELETE is just a filter for WandB
                     TARGET = 'T_5day_2p',
                     test_start = '2018-01-01',
                     end_date = '2021-03-01',
@@ -62,7 +66,7 @@ df['T_10day_closeratio'] = df.groupby('ticker', sort=False)['close'].shift(-10).
 df['T_5day_closeratio'] = df.groupby('ticker', sort=False)['close'].shift(-5).reset_index(drop=True) / df['close']
 
 #Initializing WandB
-!wandb login 139a106845d441074259f3d8b48ab85719b377cf
+os.system('wandb login 139a106845d441074259f3d8b48ab85719b377cf')
 
 #See https://docs.wandb.com/library/init for more details
 run = wandb.init(project='Week_2p', config=HYPERPARAMS, tags = HYPERPARAMS['tags'])
