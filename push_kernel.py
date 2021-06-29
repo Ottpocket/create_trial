@@ -18,12 +18,15 @@ parser = argparse.ArgumentParser()
 #parser.add_argument('--model_name', required = True) #Now created from features
 parser.add_argument('--baseline', default='True', type=bool,
                     choices = ['True','False'])
-parser.add_argument('--high_3', default='False', type=bool,
-                    choices = ['True','False'])
-parser.add_argument('--high_5', default='False', type=bool,
-                    choices = ['True','False'])
+
+#code from https://www.kaggle.com/ottpocket/create-stonk-data-from-daily-prices
+for n_days in [3, 5, 10, 20, 50]:
+    for feat in ['high', 'totrange']:
+        parser.add_argument(f'--{feat}_{n_days}', default='False', type=bool,
+                            choices = ['True','False'])
 
 args = parser.parse_args()
+
 
 
 #1) and 2) Create Folder; place json in folder
