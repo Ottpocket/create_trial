@@ -25,13 +25,21 @@ for n_days in [3, 5, 10, 20, 50]:
         parser.add_argument(f'--{feat}_{n_days}', default='False', type=bool,
                             choices = ['True','False'])
 
-args = parser.parse_args()
+#Getting the name of the model from the features selected
+args = vars(parser.parse_args())
+keys = sorted(list(args.keys()))
+model_name = ''
+features_list = []
+for key in keys:
+    if args[key]=='True':
+        model_name += key+'_'
+        features_list.append(key)
 
 
 
 #1) and 2) Create Folder; place json in folder
 DIRECTORY = '/home/aott/Documents/python_scripts/kaggle_stonk_directories'
-NEW_DIRECTORY = create_json(args.model_name, DIRECTORY=DIRECTORY)
+NEW_DIRECTORY = create_json(model_name, DIRECTORY=DIRECTORY)
 
 #3) Place .py code in folder
 from shutil import copyfile
@@ -47,11 +55,11 @@ with open(file_destination, 'r') as file :
   filedata = file.read()
 
 filedata = filedata.replace('TO_BE_REPLACED_IN_COPY',
-                            'abcd')
+                            features_list)
 with open(file_destination, 'w') as file:
   file.write(filedata)
 
 
 #4) Call kaggle api
 #help from https://janakiev.com/blog/python-shell-commands/
-os.system(f'kaggle kernels push -p {NEW_DIRECTORY}')
+#os.system(f'kaggle kernels push -p {NEW_DIRECTORY}')
