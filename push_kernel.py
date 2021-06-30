@@ -22,8 +22,9 @@ parser.add_argument('--baseline', default='True', type=bool,
 #code from https://www.kaggle.com/ottpocket/create-stonk-data-from-daily-prices
 for n_days in [3, 5, 10, 20, 50]:
     for feat in ['high', 'totrange']:
-        parser.add_argument(f'--{feat}_{n_days}', default='False', type=bool,
+        parser.add_argument(f'--{feat}_{n_days}', default='False', type=str,
                             choices = ['True','False'])
+
 
 #Getting the name of the model from the features selected
 args = vars(parser.parse_args())
