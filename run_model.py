@@ -16,16 +16,21 @@ os.system('git clone https://github.com/Ottpocket/Helper_Functions')
 sys.path.append('/kaggle/working/Helper_Functions')
 from Helper_Functions.__init__ import reduce_mem_usage, get_val_test_increments, get_preds
 
+#Getting tags from name of kernel.  Hacky
+names_of_features = "FEATURES_BE_REPLACED_IN_COPY"
+if names_of_features[-1]=='+':
+    names_of_features = names_of_features[:-1]
+names_of_features = names_of_features.split('+')
 
 import wandb
 HYPERPARAMS = dict( #Params
                     model = 'lgbm', #lgbm, catboost, logistic
-                    tags = [TO_BE_REPLACED_IN_COPY], #declares the features for the model. DELETE is just a filter for WandB
+                    tags = names_of_features, #declares the features for the model. DELETE is just a filter for WandB
                     TARGET = 'T_5day_2p',
                     test_start = '2018-01-01',
                     end_date = '2021-03-01',
-                    train_months = 3,
-                    intervals = 'year'
+                    train_months = TRAIN_TO_BE_REPLACED,
+                    intervals = 'INTERVAL_TO_BE_REPLACED'
                     )
 if HYPERPARAMS['model'] == 'lgbm': #tested and works
     model = LGBMClassifier(objective='binary')
