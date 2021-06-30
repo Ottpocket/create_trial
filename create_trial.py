@@ -1,3 +1,8 @@
+'''
+Deprecated: use create_json function from Helper_Functions
+'''
+
+
 ################################################################################
 #Script to send a trial to kaggle to run
 # Creates
@@ -12,7 +17,7 @@ import json
 
 DIRECTORY =  '/home/aott/Documents/python_scripts/kaggle_stonk_directories'
 TRIAL_NAME = sys.argv[1]
-KAGGLE_NAME = 'Ottpocket'
+KAGGLE_NAME = 'Ottpocket' #sys.argv[2]
 
 
 
